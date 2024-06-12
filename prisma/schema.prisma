@@ -12,4 +12,5 @@ model User {
   name     String
   userName String
   email    String
+  dynamicData Json?
 }

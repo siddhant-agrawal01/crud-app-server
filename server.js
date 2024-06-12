@@ -78,6 +78,40 @@ app.delete('/users/:id', async (req, res) => {
   }
 });
 
+
+
+app.post('/users/updateStructure', async (req, res) => {
+  const { headers, users } = req.body;
+
+  try {
+    for (const user of users) {
+      const userId = user.id;
+      const { name, userName, email, ...dynamicFields } = user;
+
+      await prisma.user.upsert({
+        where: { id: Number(userId) },
+        update: {
+          name,
+          userName,
+          email,
+          dynamicData: dynamicFields
+        },
+        create: {
+          name,
+          userName,
+          email,
+          dynamicData: dynamicFields
+        }
+      });
+    }
+
+    res.status(200).send('Structure updated');
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
