@@ -19,7 +19,9 @@ app.get('/users', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
+app.get('/home',(req,res)=>{
+  res.send("server is up")
+})
 app.get('/users/:id', async (req, res) => {
   try {
     const { id } = req.params;
